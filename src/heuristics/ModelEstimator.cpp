@@ -84,7 +84,7 @@ vector<double> ModelEstimator::getInitialModelParameters()
 	double initKappa = 2.0;
 	vector<double> params;
 	if (model == Definitions::ModelType::HKY85){
-		params =  {{initKappa}};
+		params =  {initKappa};
 	}
 	else if (model == Definitions::ModelType::GTR){
 		params = {{1.0,1.0/initKappa,1.0/initKappa,1.0/initKappa,1.0/initKappa}};

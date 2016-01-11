@@ -145,7 +145,7 @@ void BandCalculator::processPosteriorProbabilities(BackwardPairHMM* hmm, Band* b
 
 	int xHi, xLo, yHi, yLo, mHi,mLo, rowCount;
 
-	unsigned int tmpRow;
+	int tmpRow;
 
 	double tmpX, tmpY, tmpM;
 
