@@ -369,7 +369,7 @@ namespace EBC
                     if(!Emptied(y,delta))
                     {
                         Qxy=Agglomerative_criterion(x,y,delta,r);
-                        if(Qxy < Qmin-Definitions::almostZero)
+                        if(Qxy < Qmin-Definitions::minModelBound)
                         {
                             Qmin=Qxy;
                             *a=x;

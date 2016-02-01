@@ -89,6 +89,8 @@ public:
 	//small number close to zero for param estimation
 	constexpr static const double almostZero = 1e-8;
 
+	constexpr static const double minModelBound = 0.000001;
+
 	constexpr static const double maxAlpha = 99.999999;
 
 	//3 states - M I D
@@ -167,7 +169,7 @@ public:
 	static aaModelDefinition aaLgModel;
 
 
-constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.1512\n\
+constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.1602\n\
 Copyright (C) 2016  Marcin Bogusz\n\
 This program is free software: you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\

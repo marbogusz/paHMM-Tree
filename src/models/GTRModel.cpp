@@ -28,7 +28,7 @@ GTRModel::GTRModel(Dictionary* dict, Maths* alg, unsigned int rates)
 {
 	for (int i=0;i<5;i++)
 	{
-		this->parameterLoBounds[i] = Definitions::almostZero;
+		this->parameterLoBounds[i] = Definitions::minModelBound;
 		this->parameterHiBounds[i] = Definitions::gtrMaxRate;
 	}
 }
