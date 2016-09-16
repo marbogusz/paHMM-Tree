@@ -86,7 +86,7 @@ CommandReader::CommandReader(int argc, char** argv)
 
 		if (!parser.option("in"))
 		{
-			cout << "paHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.1512 \n\n";
+			cout << "paHMM-Tree - distance-based statistical phylogenetic tree estimation version\n\n";
 		    cout << "Usage: HMM --in input_file --(GTR|HKY|LG) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
 		    parser.print_options();
 			throw HmmException("Please specify the input file\n");
@@ -94,7 +94,7 @@ CommandReader::CommandReader(int argc, char** argv)
 
 		if (!(parser.option("GTR") || parser.option("HKY") || parser.option("LG")))
 		{
-					cout << "paHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.1512 \n\n";
+					cout << "paHMM-Tree - distance-based statistical phylogenetic tree estimation\n\n";
 				    cout << "Usage: HMM --in input_file --(GTR|HKY|LG) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
 				    parser.print_options();
 					throw HmmException("Please specify a valid substitution model \n");
