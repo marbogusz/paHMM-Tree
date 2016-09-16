@@ -213,8 +213,8 @@ void BandingEstimator::optimizePairByPair()
 
 	pb.done();
 
-	DEBUG("Optimized divergence times:");
-	DEBUG(this->divergenceTimes);
+	INFO("Optimized divergence times:");
+	INFO(this->divergenceTimes);
 }
 
 

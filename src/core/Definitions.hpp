@@ -169,7 +169,7 @@ public:
 	static aaModelDefinition aaLgModel;
 
 
-constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.1602\n\
+constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.160916\n\
 Copyright (C) 2016  Marcin Bogusz\n\
 This program is free software: you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\

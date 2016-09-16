@@ -65,7 +65,9 @@ vector<SequenceElement*>* Sequences::getSequencesAt(unsigned int pos){
 Sequences::~Sequences()
 {
 	delete dict;
-	delete[] observedFrequencies;
+	if (observedFrequencies != NULL){
+		delete[] observedFrequencies;
+	}
 }
 
 Dictionary* Sequences::getDictionary()
@@ -153,7 +155,7 @@ double* Sequences::getElementFrequencies(array<unsigned int, 3>& triplet)
 	{
 		for(auto it2 = (translatedSequences[it1])->begin(); it2 != (translatedSequences[it1])->end(); ++it2)
 		{
-			if (!((*it2)->isIsGap()))
+			if (!((*it2)->isIsGap()) && !((*it2)->isFastaClass()) )
 			{
 				count++;
 				observedFrequencies[(*it2)->getMatrixIndex()]++;

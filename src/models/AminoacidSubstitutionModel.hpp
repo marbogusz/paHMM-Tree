@@ -50,7 +50,7 @@ public:
 
 	void setParameters(const vector<double>&){}
 
-	void setObservedFrequencies(double* observedFrequencies) {};
+	//void setObservedFrequencies(double* observedFrequencies) {};
 };
 
 } /* namespace EBC */

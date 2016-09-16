@@ -58,8 +58,10 @@ void  DistanceMatrix::invalidate(std::pair<unsigned int, unsigned int>& pr)
 {
 	for(auto el = revdistances.begin(); el != revdistances.end(); el++)
 	{
-		if (el->second.first == pr.first || el->second.first == pr.second ||el->second.second == pr.first || el->second.second == pr.second)
-			revdistances.erase(el);
+		if ((el->second.first == pr.first || el->second.first == pr.second) && (el->second.second == pr.first || el->second.second == pr.second)){
+					revdistances.erase(el);
+					return;
+		}
 	}
 }
 

@@ -25,6 +25,7 @@
 #include "core/HmmException.hpp"
 #include "core/IParser.hpp"
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -39,6 +40,7 @@ private:
 	ifstream infile;
 	vector<string>* sequences;
 	vector<string>* names;
+	map<string,string> mappedSeqs;
 	vector<string>::iterator it;
 	vector<string>::iterator itN;
 

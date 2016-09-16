@@ -154,7 +154,7 @@ vector<double> CommandReader::getIndelParams()
 		for (i=0; i< 2; i++)
 		{
 			DEBUG("indel parameters: " << i << ": " << parser.option("indel_params").argument(i));
-			vec.push_back(atof(parser.option("i").argument(i).c_str()));
+			vec.push_back(atof(parser.option("indel_params").argument(i).c_str()));
 		}
 	}
 	else throw HmmException("Indel model not specified");

@@ -33,6 +33,8 @@ AminoacidSubstitutionModel::AminoacidSubstitutionModel(Dictionary* dict, Maths* 
 	this->piLogFreqs = new double[matrixSize];
 
 	std::copy(modelDef.aaRates,modelDef.aaRates + this->matrixFullSize, this->qMatrix);
+
+/*
 	std::copy(modelDef.aaFreqs,modelDef.aaFreqs + this->matrixSize, this->piFreqs);
 
 	for(unsigned int i = 0; i< this->matrixSize; i++)
@@ -43,6 +45,7 @@ AminoacidSubstitutionModel::AminoacidSubstitutionModel(Dictionary* dict, Maths* 
 	this->setDiagonalMeans();
 	this->doEigenDecomposition();
 	eigenDecomposed=true;
+*/
 }
 
 
