@@ -72,7 +72,6 @@ int main(int argc, char ** argv) {
 		//FileLogger::InfoLogger().setCerr();
 
 		INFO("Reading input sequences...");
-		DEBUG("Creating alignment object...");
 
 		Sequences* inputSeqs = new Sequences(parser, cmdReader->getSequenceType(),removeGaps);
 
@@ -121,6 +120,8 @@ int main(int argc, char ** argv) {
 
 		auto distances = be->getOptimizedTimes();
 		auto seqCount =  inputSeqs->getSequenceCount();
+
+
 
 		//output distance matrix
 		distfile.open((string(cmdReader->getInputFileName()).append(Definitions::distMatExt)).c_str(),ios::out);

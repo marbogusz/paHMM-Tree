@@ -42,6 +42,7 @@ ModelEstimator::ModelEstimator(Sequences* inputSeqs, Definitions::ModelType mode
 	dict = inputSequences->getDictionary();
 	tal = new TripletAligner (inputSequences, gtree->getDistanceMatrix(), -1.0);
 
+	//Up to
 	tripletIdxs = tst.sampleFromTree();
 
 	tripletIdxsSize = tripletIdxs.size();
@@ -179,13 +180,10 @@ void ModelEstimator::recalculateHMMs()
 	ste->clean();
 }
 
-void ModelEstimator::estimateParameters()
+void ModelEstimator::doSME()
 {
-
 	double d1,d2,d3;
 	DUMP("Model Estimator estimate parameters iteration");
-
-	int cap;
 
 	for(unsigned int trp = 0; trp < tripletIdxsSize; trp++)
 	{
@@ -196,12 +194,64 @@ void ModelEstimator::estimateParameters()
 		sme->addTriplet(tripleAlignments[trp], trp, d1, d2, d3);
 	}
 	sme->optimize();
+}
 
-	//check if distances are for every triplet!
-	//if not, re-estimate with fixed values for that triplet
+void ModelEstimator::estimateParameters()
+{
 
-	//INDEL PART
+
 	double tb1,tb2,tb3,steT1, steT2;
+	int cleaned = 0;
+	bool zeroBL = false;
+
+	//Estimate subst. model
+	this->doSME();
+
+	//Check for 0 branch lengths; delete triplets in case of 0 b.l.
+	//Can't remove all though!
+	for(int trp = tripletIdxsSize-1; trp >= 0; trp--)
+	{
+		tb1 = sme->getTripletDivergence(trp,0);
+		tb2 = sme->getTripletDivergence(trp,1);
+		tb3 = sme->getTripletDivergence(trp,2);
+		if(tb1 <= 1.1*Definitions::almostZero || tb2 <= 1.1*Definitions::almostZero || tb3 <= 1.1 * Definitions::almostZero){
+			if(tripletIdxsSize == 1){
+				//can't purge all the triplets!
+				continue;
+			}
+			WARN("Triplet estimator zero length branch in triplet " << trp << " Skipping; branch lengths " << tb1 << " " << tb2 << " " << tb3);
+
+			delete tripleAlignments[trp][0];
+			delete tripleAlignments[trp][1];
+			delete tripleAlignments[trp][2];
+
+			delete pairAlignments[trp][0];
+			delete pairAlignments[trp][1];
+			delete pairAlignments[trp][2];
+			delete pairAlignments[trp][3];
+
+			delete pairwisePosteriors[trp][0];
+			delete pairwisePosteriors[trp][1];
+
+			delete fwdHMMs[trp][0];
+			delete fwdHMMs[trp][1];
+
+			tripleAlignments.erase(tripleAlignments.begin() + trp);
+			pairAlignments.erase(pairAlignments.begin() + trp);
+			pairwisePosteriors.erase(pairwisePosteriors.begin() + trp);
+			fwdHMMs.erase(fwdHMMs.begin() + trp);
+			tripletIdxs.erase(tripletIdxs.begin() + trp);
+			tripletDistances.erase(tripletDistances.begin() + trp);
+			tripletIdxsSize--;
+			cleaned++;
+			zeroBL = true;
+		}
+	}
+	if(zeroBL){
+		sme->clean(cleaned);
+		ste->clean(cleaned);
+		this->doSME();
+	}
 
 	substitutionParameters = sme->getModelParams()->getSubstParameters();
 	alpha = sme->getModelParams()->getAlpha();
@@ -216,7 +266,7 @@ void ModelEstimator::estimateParameters()
 		steT2 = tb3 + tb2;
 
 		if(tb1 <= 1.1*Definitions::almostZero || tb2 <= 1.1*Definitions::almostZero || tb3 <= 1.1 * Definitions::almostZero){
-			ERROR("Triplet estimator zero length branch " << tb1 << " " << tb2 << " " << tb3);
+			INFO("Triplet estimator zero length branch " << tb1 << " " << tb2 << " " << tb3);
 			WARN("Problem while estimating substitution model parameters: zero length branch in the estimator triplet tree. Model parameters might be inaccurate");
 			cout << "Problem while estimating substitution model parameters: zero length branch in the estimator triplet tree.\n Model parameters might be inaccurate\n";
 			steT1 = tripletDistances[trp][0] * bestFwdTm;
@@ -246,7 +296,7 @@ void ModelEstimator::estimateParameters()
 
 void ModelEstimator::calculateInitialHMMs(Definitions::ModelType model)
 {
-	DEBUG("EstimateTripleAligment");
+	DEBUG("Estimating Triple Aligments");
 	//amino acid mode
 	bool aaMode = false;
 	double tmpd;
@@ -326,17 +376,18 @@ void ModelEstimator::calculateInitialHMMs(Definitions::ModelType model)
 
 		//0-1
 		tmpd = gtree->getDistanceMatrix()->getDistance(tripletIdxs[i][0],tripletIdxs[i][1]);
-		DUMP("Triplet " << i << " guide distance between seq 1 and 2 " << tmpd);
+		DEBUG("Triplet " << i << " guide distance between seq 1 and 2 " << tmpd);
 		tripletDistances[i][0] = tmpd;
 		//1-2
 		tmpd = gtree->getDistanceMatrix()->getDistance(tripletIdxs[i][1],tripletIdxs[i][2]);
-		DUMP("Triplet " << i << " guide distance between seq 2 and 3 " << tmpd);
+		DEBUG("Triplet " << i << " guide distance between seq 2 and 3 " << tmpd);
 		tripletDistances[i][1] = tmpd;
 		//0-2
 		tmpd = gtree->getDistanceMatrix()->getDistance(tripletIdxs[i][0],tripletIdxs[i][2]);
-		DUMP("Triplet " << i << " guide distance between seq 1 and 3 " << tmpd);
+		DEBUG("Triplet " << i << " guide distance between seq 1 and 3 " << tmpd);
 		tripletDistances[i][2] = tmpd;
-		bandPairs[i] = make_pair(new Band(len1,len2,0.1),new Band(len2,len3,0.1));
+		bandPairs[i] = make_pair(new Band(len1,len2,tripletDistances[i][0] < Definitions::kmerHighDivergence ? Definitions::narrowBandFactor : Definitions::initialBandFactor ),
+				new Band(len2,len3,tripletDistances[i][1] < Definitions::kmerHighDivergence ? Definitions::narrowBandFactor : Definitions::initialBandFactor ));
 		//bandPairs[i] = make_pair(nullptr,nullptr);
 
 		fwdHMMs[i][0] = new ForwardPairHMM(seqsA[i][0],seqsA[i][1], substModel, indelModel, Definitions::DpMatrixType::Full, bandPairs[i].first,true);
@@ -362,15 +413,15 @@ void ModelEstimator::calculateInitialHMMs(Definitions::ModelType model)
 					f2->setDivergenceTimeAndCalculateModels(tripletDistances[i][1]*tm);
 
 					currentLnl += (f1->runAlgorithm() + f2->runAlgorithm()) * -1.0;
-					if (currentLnl > bestLnl){
-						bestLnl = currentLnl;
-						this->bestFwdAlpha = bestA = a;
-						bestL = l;
-						this->bestFwdTm = bestTm = tm;
 
-					}
 				}
+				if (currentLnl > bestLnl){
+					bestLnl = currentLnl;
+					this->bestFwdAlpha = bestA = a;
+					bestL = l;
+					this->bestFwdTm = bestTm = tm;
 
+				}
 			}
 		}
 	}

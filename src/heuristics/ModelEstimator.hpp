@@ -116,6 +116,8 @@ protected:
 
 	vector<double> getInitialModelParameters();
 
+	void doSME();
+
 public:
 	ModelEstimator(Sequences* inputSeqs, Definitions::ModelType model,
 			Definitions::OptimizationType ot,

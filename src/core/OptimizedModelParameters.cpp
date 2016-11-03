@@ -85,7 +85,8 @@ void OptimizedModelParameters::boundDivergenceBasedOnLambda(double lambda){
 void OptimizedModelParameters::boundLambdaBasedOnDivergence(double time){
 	//lambda * t must be smaller than negative ln(0.5)
 	double ln05 = log(0.5)*-1.0;
-	indelHiBounds[0] = min((ln05/time) - Definitions::almostZero, im->getHiBound(0));
+	//subtract 0.00000011 to avoid the error with optimizer overrunning the bound
+	indelHiBounds[0] = min((ln05/time) - (11*(Definitions::almostZero)), im->getHiBound(0));
 	if (indelParameters[0] > indelHiBounds[0])
 		indelParameters[0] = indelHiBounds[0];
 	DUMP("Optimised Model Parameters lambda Hi bound : " << indelHiBounds[0] );

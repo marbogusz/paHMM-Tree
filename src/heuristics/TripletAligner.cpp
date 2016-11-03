@@ -205,10 +205,10 @@ array<vector<unsigned char>*, 3> TripletAligner::alignPosteriors(pair<vector<uns
 	{
 		sp3 << dict->getSymbolAt((*tr3)[c]);
 	}
-	DUMP("Posterior triple alignment");
-	DUMP(sp1.str());
-	DUMP(sp2.str());
-	DUMP(sp3.str());
+	DEBUG("Posterior triple alignment");
+	DEBUG(sp1.str());
+	DEBUG(sp2.str());
+	DEBUG(sp3.str());
 
 	return {tr1,tr2,tr3};
 }

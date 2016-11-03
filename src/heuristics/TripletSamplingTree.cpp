@@ -116,8 +116,8 @@ vector<array<unsigned int, 3> > TripletSamplingTree::sampleFromTree()
 	pair<double,double> idealRange = make_pair(0.35,0.75);
 	pair<double,double> secondaryRange = make_pair(0.15,0.85);
 
-	unsigned int treeNo = 0;
-	unsigned int maxTrees = 1;
+	unsigned int treeNo = 1;
+	unsigned int maxTrees = Definitions::maxSampledTriplets;
 
 
 	for (unsigned int i = 0;  i < distMat->getSize(); i++)
@@ -140,7 +140,7 @@ vector<array<unsigned int, 3> > TripletSamplingTree::sampleFromTree()
 	}
 	//Check ideal range
 	for(auto pr : vecPairsDesired){
-		if (treeNo >maxTrees)
+		if (treeNo > maxTrees)
 			break;
 		s1 = pr.first;
 		s2 = pr.second;
@@ -157,7 +157,7 @@ vector<array<unsigned int, 3> > TripletSamplingTree::sampleFromTree()
 			tmpd1 =  distMat->getDistance(nd.first, s1);
 			tmpd2 =  distMat->getDistance(nd.first, s2);
 
-			if (isWithinRange(tmpd1, idealRange) && isWithinRange(tmpd1, idealRange)) {
+			if (isWithinRange(tmpd1, idealRange) && isWithinRange(tmpd2, idealRange)) {
 				result.push_back({{s2,s1,nd.first}});
 				DEBUG("Sampled triplet : " << s2 << "\t\t" << s1 << "\t\t" << nd.first);
 				availableNodes.erase(s1);
@@ -174,9 +174,9 @@ vector<array<unsigned int, 3> > TripletSamplingTree::sampleFromTree()
 		}
 	}
 	//not found
-	if(!found){
+	if(!found || treeNo < maxTrees){
 		for(auto pr : vecPairsSecondary){
-			if (treeNo >maxTrees)
+			if (treeNo > maxTrees)
 				break;
 			s1 = pr.first;
 			s2 = pr.second;
@@ -193,7 +193,7 @@ vector<array<unsigned int, 3> > TripletSamplingTree::sampleFromTree()
 				tmpd1 =  distMat->getDistance(nd.first, s1);
 				tmpd2 =  distMat->getDistance(nd.first, s2);
 
-				if (isWithinRange(tmpd1, secondaryRange) && isWithinRange(tmpd1, secondaryRange)) {
+				if (isWithinRange(tmpd1, secondaryRange) && isWithinRange(tmpd2, secondaryRange)) {
 					result.push_back({{s2,s1,nd.first}});
 					DEBUG("Sampled triplet : " << s2 << "\t\t" << s1 << "\t\t" << nd.first);
 					availableNodes.erase(s1);

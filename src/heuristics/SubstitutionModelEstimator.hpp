@@ -87,7 +87,7 @@ public:
 
 	void optimize();
 
-	void clean();
+	void clean(int nelems = 0);
 
 	double getTripletDivergence(unsigned int triplet, unsigned int branch)
 	{

@@ -67,6 +67,8 @@ public:
 	constexpr static const double kmerLowDivergence = 0.6;
 	constexpr static const double kmerHighDivergence = 0.8;
 
+	constexpr static const int maxSampledTriplets = 5;
+
 	//for band calculations
 	constexpr static const double bandPosteriorLikelihoodLimit = -3;
 	constexpr static const double bandPosteriorLikelihoodDelta = -9;
@@ -84,6 +86,7 @@ public:
 	constexpr static const int BrentMaxIter = 100;
 
 	//band factor default for intial fwd likelihood calculations
+	constexpr static const double narrowBandFactor = 0.1;
 	constexpr static const double initialBandFactor = 0.33;
 
 	//small number close to zero for param estimation
@@ -131,18 +134,14 @@ public:
 
 
 	constexpr static const unsigned int HKY85ParamCount = 1;
-
 	constexpr static const unsigned int GTRParamCount = 5;
-
 	constexpr static const unsigned int AAParamCount = 0;
-
 	constexpr static const unsigned int NBIndelParamCount = 2;
 
 	constexpr static const unsigned int nucleotideCount = 4;
-
 	constexpr static const unsigned int aminoacidCount = 20;
 
-	constexpr static auto distMatExt = ".hmm.distmat";
+	constexpr static auto distMatExt = ".paHMM-Tree.distmat";
 	constexpr static auto treeExt = ".paHMM-Tree.tree";
 	constexpr static auto logExt = ".paHMM-Tree.log";
 
@@ -169,7 +168,7 @@ public:
 	static aaModelDefinition aaLgModel;
 
 
-constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.160916\n\
+constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.161101\n\
 Copyright (C) 2016  Marcin Bogusz\n\
 This program is free software: you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\

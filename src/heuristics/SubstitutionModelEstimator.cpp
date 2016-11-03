@@ -67,7 +67,7 @@ SubstitutionModelEstimator::SubstitutionModelEstimator(Sequences* inputSeqs, Sub
 	bfgs = new Optimizer(modelParams, this,ot);
 }
 
-void SubstitutionModelEstimator::clean()
+void SubstitutionModelEstimator::clean(int nelems)
 {
 	//for(auto entry : ptMatrices)
 	//{
@@ -75,7 +75,17 @@ void SubstitutionModelEstimator::clean()
 	//	delete entry[1];
 	//	delete entry[2];
 	//}
+	if(nelems > 0){
+		for(int i=0; i<nelems; i++){
+			delete ptMatrices[i][0];
+			delete ptMatrices[i][1];
+			delete ptMatrices[i][2];
+		}
+		patterns.erase(patterns.begin(),patterns.begin() + nelems);
+		ptMatrices.erase(ptMatrices.begin(),ptMatrices.begin() + nelems);
+		distances.erase(distances.begin(), distances.begin() + (nelems*3));
 
+	}
 
 	for (auto itp = patterns.begin(); itp != patterns.end(); itp++)
 	{

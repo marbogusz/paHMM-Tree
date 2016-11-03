@@ -82,11 +82,16 @@ void StateTransitionEstimator::optimize()
 	//modelParams->outputParameters();
 }
 
-void StateTransitionEstimator::clean()
+void StateTransitionEstimator::clean(int ndel)
 {
+	if (ndel > 0){
+		stmSamples.erase(stmSamples.begin(), stmSamples.begin() + 2*ndel);
+	}
+
     for(auto tm : stmSamples)
     {
-    	delete tm;
+    	if (tm != nullptr)
+    		delete tm;
     }
 }
 

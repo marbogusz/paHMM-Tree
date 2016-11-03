@@ -61,7 +61,7 @@ public:
 
 	void optimize();
 
-	void clean();
+	void clean(int ndel = 0);
 
 	virtual ~StateTransitionEstimator();
 
