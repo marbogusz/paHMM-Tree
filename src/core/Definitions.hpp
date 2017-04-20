@@ -142,6 +142,7 @@ public:
 	constexpr static const unsigned int aminoacidCount = 20;
 
 	constexpr static auto distMatExt = ".paHMM-Tree.distmat";
+	constexpr static auto paramsExt = ".paHMM-Tree.params";
 	constexpr static auto treeExt = ".paHMM-Tree.tree";
 	constexpr static auto logExt = ".paHMM-Tree.log";
 

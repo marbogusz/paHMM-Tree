@@ -1,0 +1,150 @@
+### PaHMMtree params
+
+INCDIR1 = $(CURDIR)/src
+INCDIR2 = $(CURDIR)
+
+INC=$(INCDIR1) $(INCDIR2) $(WXINCDIR) $(WXSTATICINC)
+INC_PAR=$(foreach d, $(INC), -I$d)
+
+#PAHMMFLAGS=$(INC_PAR) -O3 -c -fmessage-length=0 -std=c++11 -msse2 -mfpmath=sse
+PAHMMFLAGS=$(INC_PAR) 
+#PAHMMFLAGS= 
+
+
+### WX params
+WXDIR = /Users/mbogusz/software/wx/wxWidgets-master
+
+guicpp = pahmmGUI.cpp
+#guicpp = wxHello.cpp
+
+prefix = /usr/local
+exec_prefix = ${prefix}
+datarootdir = ${prefix}/share
+EXEEXT = 
+WINDRES = 
+SETFILE = SetFile
+NM = nm
+BK_DEPS = /Users/mbogusz/software/wx/wxWidgets-master/build-osx-shared/bk-deps
+srcdir = src/gui
+top_srcdir = $(WXDIR)
+LIBS = -lz -framework Security -lpthread -liconv
+LDFLAGS_GUI = 
+CXX = g++ -mmacosx-version-min=10.7
+CXXFLAGS = -DWX_PRECOMP -O3 -fno-common 
+CPPFLAGS = -D_FILE_OFFSET_BITS=64 -I${wx_top_builddir}/lib/wx/include/osx_cocoa-unicode-static-3.1 -I${top_srcdir}/include $(PAHMMFLAGS)
+LDFLAGS =   -framework IOKit -framework Carbon -framework Cocoa -framework AudioToolbox -framework System -framework OpenGL 
+WX_LIB_FLAVOUR = 
+TOOLKIT = OSX_COCOA
+TOOLKIT_LOWERCASE = osx_cocoa
+TOOLKIT_VERSION = 
+TOOLCHAIN_FULLNAME = osx_cocoa-unicode-static-3.1
+EXTRALIBS =   -framework IOKit -framework Carbon -framework Cocoa -framework AudioToolbox -framework System -framework OpenGL  -lz -framework Security -lpthread -liconv 
+EXTRALIBS_XML =  -lexpat
+EXTRALIBS_GUI = -lpng -lz -ljpeg -ltiff -framework WebKit
+CXXWARNINGS = -Wall -Wundef -Wunused-parameter -Wno-ctor-dtor-privacy -Woverloaded-virtual -Wno-deprecated-declarations
+HOST_SUFFIX = 
+wx_top_builddir = /Users/mbogusz/software/wx/wxWidgets-master/build-osx-shared
+
+### Variables: ###
+
+DESTDIR = 
+WX_RELEASE = 3.1
+WX_VERSION = $(WX_RELEASE).1
+LIBDIRNAME = $(wx_top_builddir)/lib
+PAHMMGUI_CXXFLAGS = -D__WX$(TOOLKIT)__ $(__WXUNIV_DEFINE_p) $(__DEBUG_DEFINE_p) \
+	$(__EXCEPTIONS_DEFINE_p) $(__RTTI_DEFINE_p) $(__THREAD_DEFINE_p) \
+	-I$(srcdir) $(__DLLFLAG_p) $(CXXWARNINGS) \
+	$(CPPFLAGS) $(CXXFLAGS)
+PAHMMGUI_OBJECTS =  \
+	$(__pahmmGUI___win32rc) \
+	pahmmGUI_pahmmGUI.o
+
+### Conditionally set variables: ###
+
+CXXC = $(BK_DEPS) $(CXX)
+PORTNAME = $(TOOLKIT_LOWERCASE)$(TOOLKIT_VERSION)
+WXUNICODEFLAG = u
+EXTRALIBS_FOR_BASE = $(EXTRALIBS)
+EXTRALIBS_FOR_GUI = $(EXTRALIBS_GUI)
+__pahmmGUI___mac_setfilecmd = \
+	$(SETFILE) -t APPL pahmmGUI$(EXEEXT)
+COND_PLATFORM_OS2_1___pahmmGUI___os2_emxbindcmd = $(NM) pahmmGUI$(EXEEXT) | if \
+	grep -q pmwin.763 ; then emxbind -ep pahmmGUI$(EXEEXT) ; fi
+__pahmmGUI_app_Contents_PkgInfo___depname \
+	= pahmmGUI.app/Contents/PkgInfo
+__pahmmGUI_bundle___depname = pahmmGUI_bundle
+____pahmmGUI_BUNDLE_TGT_REF_DEP \
+	= $(__pahmmGUI_app_Contents_PkgInfo___depname)
+COND_MONOLITHIC_0___WXLIB_ADV_p = \
+	-lwx_$(PORTNAME)$(WXUNIVNAME)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR)_adv-$(WX_RELEASE)$(HOST_SUFFIX)
+__WXLIB_ADV_p = $(COND_MONOLITHIC_0___WXLIB_ADV_p)
+COND_MONOLITHIC_0___WXLIB_CORE_p = \
+	-lwx_$(PORTNAME)$(WXUNIVNAME)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR)_core-$(WX_RELEASE)$(HOST_SUFFIX)
+__WXLIB_CORE_p = $(COND_MONOLITHIC_0___WXLIB_CORE_p)
+COND_MONOLITHIC_0___WXLIB_BASE_p = \
+	-lwx_base$(WXBASEPORT)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR)-$(WX_RELEASE)$(HOST_SUFFIX)
+__WXLIB_BASE_p = $(COND_MONOLITHIC_0___WXLIB_BASE_p)
+COND_MONOLITHIC_1___WXLIB_MONO_p = \
+	-lwx_$(PORTNAME)$(WXUNIVNAME)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR)-$(WX_RELEASE)$(HOST_SUFFIX)
+COND_wxUSE_REGEX_builtin___LIB_REGEX_p = \
+	-lwxregex$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR)-$(WX_RELEASE)$(HOST_SUFFIX)
+__LIB_REGEX_p = $(COND_wxUSE_REGEX_builtin___LIB_REGEX_p)
+
+### Targets: ###
+
+all: pahmmGUI$(EXEEXT) $(__pahmmGUI_bundle___depname)
+
+install: 
+
+uninstall: 
+
+install-strip: install
+
+clean: 
+	rm -rf ./.deps ./.pch
+	rm -f ./*.o
+	rm -f pahmmGUI$(EXEEXT)
+	rm -rf pahmmGUI.app
+
+distclean: clean
+	rm -f config.cache config.log config.status bk-deps bk-make-pch shared-ld-sh Makefile
+
+pahmmGUI$(EXEEXT): $(PAHMMGUI_OBJECTS) $(__pahmmGUI___win32rc)
+	$(CXX) -o $@ $(PAHMMGUI_OBJECTS)    -L$(LIBDIRNAME) $(LDFLAGS_GUI) $(LDFLAGS) $(__WXLIB_ADV_p)  $(__WXLIB_CORE_p)  $(__WXLIB_BASE_p)  $(__WXLIB_MONO_p) $(__LIB_SCINTILLA_IF_MONO_p) $(__LIB_TIFF_p) $(__LIB_JPEG_p) $(__LIB_PNG_p)  $(EXTRALIBS_FOR_GUI) $(__LIB_ZLIB_p) $(__LIB_REGEX_p) $(__LIB_EXPAT_p) $(EXTRALIBS_FOR_BASE) $(LIBS)
+	
+	$(__pahmmGUI___mac_setfilecmd)
+	$(__pahmmGUI___os2_emxbindcmd)
+
+pahmmGUI.app/Contents/PkgInfo: pahmmGUI$(EXEEXT) $(top_srcdir)/src/osx/carbon/Info.plist.in $(top_srcdir)/src/osx/carbon/wxmac.icns
+	mkdir -p pahmmGUI.app/Contents
+	mkdir -p pahmmGUI.app/Contents/MacOS
+	mkdir -p pahmmGUI.app/Contents/Resources
+	
+	
+	sed -e "s/IDENTIFIER/`echo $(srcdir) | sed -e 's,\.\./,,g' | sed -e 's,/,.,g'`/" \
+	-e "s/EXECUTABLE/pahmmGUI/" \
+	-e "s/VERSION/$(WX_VERSION)/" \
+	$(top_srcdir)/src/osx/carbon/Info.plist.in >pahmmGUI.app/Contents/Info.plist
+	
+	
+	/bin/echo "APPL????" >pahmmGUI.app/Contents/PkgInfo
+	
+	
+	ln -f pahmmGUI$(EXEEXT) pahmmGUI.app/Contents/MacOS/pahmmGUI
+	
+	
+	cp -f $(top_srcdir)/src/osx/carbon/wxmac.icns pahmmGUI.app/Contents/Resources/wxmac.icns
+
+pahmmGUI_bundle: $(____pahmmGUI_BUNDLE_TGT_REF_DEP)
+
+pahmmGUI_sample_rc.o: $(top_srcdir)/samples/sample.rc
+	$(WINDRES) -i$< -o$@    --define __WX$(TOOLKIT)__ $(__WXUNIV_DEFINE_p_2) $(__DEBUG_DEFINE_p_2)  $(__EXCEPTIONS_DEFINE_p_2) $(__RTTI_DEFINE_p_2) $(__THREAD_DEFINE_p_2)  --include-dir $(srcdir) $(__DLLFLAG_p_2) --include-dir $(__RCDEFDIR_p_1) --include-dir $(top_srcdir)/include
+
+pahmmGUI_pahmmGUI.o: $(srcdir)/$(guicpp)
+	$(CXXC) -c -o $@ $(PAHMMGUI_CXXFLAGS) $(srcdir)/$(guicpp)
+
+
+# Include dependency info, if present:
+-include ./.deps/*.d
+
+.PHONY: all install uninstall clean distclean pahmmGUI_bundle
