@@ -57,6 +57,14 @@ public:
 		{
 			return Definitions::ModelType::LG;
 		}
+		if (parser.option("JTT"))
+		{
+			return Definitions::ModelType::JTT;
+		}
+		if (parser.option("WAG"))
+		{
+			return Definitions::ModelType::WAG;
+		}
 		//default;
 		return Definitions::ModelType::GTR;
 	}

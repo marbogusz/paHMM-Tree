@@ -36,7 +36,9 @@ CommandReader::CommandReader(int argc, char** argv)
 		parser.add_option("in","This option takes one argument which specifies the name of the file we want to analyze",1);
 		parser.add_option("GTR", "General time reversible substitution model");
 		parser.add_option("HKY", "HKY85 substitution model");
-		parser.add_option("LG", "Le & Gasquel AA substitution sodel");
+		parser.add_option("LG", "Le & Gasquel AA substitution model");
+		parser.add_option("WAG", "Whelan and Goldman AA substitution model");
+		parser.add_option("JTT", "Jones 1992 AA substitution model");
 		parser.add_option("indel_params","indel parameters (NB probability and rate)",2);
 		parser.set_group_name("Miscellaneous Options");
 		parser.add_option("h","Display this help message.");
@@ -79,7 +81,7 @@ CommandReader::CommandReader(int argc, char** argv)
 			cout << Definitions::notice;
 
 
-			cout << "Usage: HMM --in input_file --(GTR|HKY|LG) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
+			cout << "Usage: HMM --in input_file --(GTR|HKY|LG|WAG|JTT) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
 			parser.print_options();
 			throw HmmException("Exiting...\n");
 		}
@@ -87,12 +89,12 @@ CommandReader::CommandReader(int argc, char** argv)
 		if (!parser.option("in"))
 		{
 			cout << "paHMM-Tree - distance-based statistical phylogenetic tree estimation version\n\n";
-		    cout << "Usage: HMM --in input_file --(GTR|HKY|LG) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
+		    cout << "Usage: HMM --in input_file --(GTR|HKY|LG|WAG|JTT) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
 		    parser.print_options();
 			throw HmmException("Please specify the input file\n");
 		}
 
-		if (!(parser.option("GTR") || parser.option("HKY") || parser.option("LG")))
+		if (!(parser.option("GTR") || parser.option("HKY") || parser.option("LG")|| parser.option("WAG")|| parser.option("JTT")))
 		{
 					cout << "paHMM-Tree - distance-based statistical phylogenetic tree estimation\n\n";
 				    cout << "Usage: HMM --in input_file --(GTR|HKY|LG) [--gtr_params ... | --hky_params ... --indel_params ...]\n";
@@ -140,6 +142,8 @@ vector<double> CommandReader::getSubstParams()
 		else throw HmmException("Model parameters not specified");
 	}
 	else if (parser.option("LG")){}
+	else if (parser.option("WAG")){}
+	else if (parser.option("JTT")){}
 	else throw HmmException("Model not specified");
 
 	return vec;

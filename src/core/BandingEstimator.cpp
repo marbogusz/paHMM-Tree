@@ -75,9 +75,22 @@ BandingEstimator::BandingEstimator(Definitions::AlgorithmType at, Sequences* inp
 	{
 		substModel = new HKY85Model(dict, maths,gammaRateCategories);
 	}
-	else if (model == Definitions::ModelType::LG)
+	else if (model >= Definitions::ModelType::LG)
 	{
-			substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaLgModel);
+		switch(model){
+			case Definitions::ModelType::LG :
+				substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaLgModel);
+				DEBUG("Using LG model");
+			break;
+			case Definitions::ModelType::JTT :
+				substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaJttModel);
+				DEBUG("Using JTT model");
+			break;
+			case Definitions::ModelType::WAG :
+				substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaWagModel);
+				DEBUG("Using WAG model");
+			break;
+					}
 	}
 
 	indelModel = new NegativeBinomialGapModel();

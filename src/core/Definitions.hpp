@@ -155,7 +155,7 @@ public:
 
 	enum SequenceType {Nucleotide, Aminoacid, Codon};
 	//TODO - CODON lookup table
-	enum ModelType {GTR, HKY85, LG};
+	enum ModelType {GTR, HKY85, LG, WAG, JTT};
 
 	enum OptimizationType {BFGS, BOBYQA};
 
@@ -167,9 +167,13 @@ public:
 
 	static aaModelDefinition aaLgModel;
 
+	static aaModelDefinition aaWagModel;
 
-constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.161101\n\
-Copyright (C) 2016  Marcin Bogusz\n\
+	static aaModelDefinition aaJttModel;
+
+
+constexpr static const auto notice ="\npaHMM-Tree - distance-based statistical phylogenetic tree estimation version 0.180419\n\
+Copyright (C) 2016-2018  Marcin Bogusz\n\
 This program is free software: you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\
 the Free Software Foundation, either version 3 of the License, or\n\

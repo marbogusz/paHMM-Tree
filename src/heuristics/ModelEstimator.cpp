@@ -333,9 +333,20 @@ void ModelEstimator::calculateInitialHMMs(Definitions::ModelType model)
 			this->substModel = new GTRModel(dict, maths,gammaRateCategories);
 			substModel->setParameters({1.0,1.0/initKappa,1.0/initKappa,1.0/initKappa,1.0/initKappa});
 	}
-	else if (model == Definitions::ModelType::LG){
+	//More AA models added
+	else if (model >= Definitions::ModelType::LG){
 			aaMode = true;
-			substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaLgModel);
+			switch(model){
+			    case Definitions::ModelType::LG :
+			    	substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaLgModel);
+			    break;
+			    case Definitions::ModelType::JTT :
+					substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaJttModel);
+				break;
+			    case Definitions::ModelType::WAG :
+					substModel = new AminoacidSubstitutionModel(dict, maths,gammaRateCategories,Definitions::aaWagModel);
+				break;
+			}
 	}
 
 
